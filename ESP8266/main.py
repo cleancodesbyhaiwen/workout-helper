@@ -9,6 +9,7 @@ import time
 import json
 import sh1106
 from button import Button
+from hcsr04 import HCSR04
 
 i2c = machine.I2C(sda=machine.Pin(4), scl=machine.Pin(5),freq=100000)
 
@@ -18,7 +19,7 @@ display = sh1106.SH1106_I2C(128, 64, i2c, Pin(16), 0x3c)
 display.flip(flag=True, update=True)
 vibrator = Pin(14,Pin.OUT)
 led = Pin(12, Pin.OUT)
-rotary = ADC(0)
+sensor = HCSR04(trigger_pin=0, echo_pin=13)
 
 port=10086
 wlan = network.WLAN(network.STA_IF)
@@ -72,7 +73,7 @@ while True:
         #print('Calibration required: sys {} gyro {} accel {} mag {}'.format(*imu.cal_status()))
 
     jsonFile = {"yaw":str(imu.euler()[0]),"pitch":str(imu.euler()[1]), "roll":str(imu.euler()[2]),
-                "exercise":exercises[current_exericise_index],"distance":str(int(rotary.read()/13))}
+                "exercise":exercises[current_exericise_index],"distance":str(int(sensor.distance_cm()))}
     jsonFile = json.dumps(jsonFile)
     data,addr=s.recvfrom(1024)
     data = json.loads(data.decode('utf-8'))
@@ -85,7 +86,7 @@ while True:
         led.off()
     if data['hit'] == 'True':
         vibrator.on()
-        tim1.init(period=1000, mode=Timer.ONE_SHOT, callback=vibrator_off)
+        tim1.init(period=1500, mode=Timer.ONE_SHOT, callback=vibrator_off)
     set_count = data['set_count']
     rep_count = data['rep_count']
     s.sendto(jsonFile,addr)

@@ -30,7 +30,7 @@ while True:
             squat_anims.invisible()
             barbell_anim.visible = True
             sensor.update(data)
-            #sensor.print_data()
+            sensor.print_data()
             bench_press_anims_update(sensor,user)
             unbalance_detect(sensor,barbell)
             # Rep Count

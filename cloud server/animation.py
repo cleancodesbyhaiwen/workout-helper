@@ -4,7 +4,7 @@ import numpy as np
 
 toRad = 2*np.pi/360
 toDeg = 1/toRad
-toVirtual = 0.08
+toVirtual = 0.1
 
 scene.range = 15
 scene.forward = vector(-1,-1,-1)
@@ -51,7 +51,7 @@ class Squat_anims:
             self.head,self.upper_body])
         self.squat_objects_compound.pos = vector(0,2.375,0.375)
     def update(self,sensor):
-        self.squat_objects_compound.pos = vector(0,sensor.distance*toVirtual+0.375,0.375)
+        self.squat_objects_compound.pos = vector(0,sensor.distance*toVirtual+3.375,0.375)
     def invisible(self):
         self.excercise_name.visible = False
         self.squat_objects_compound.visible = False
@@ -97,7 +97,10 @@ def bench_press_anims_update(sensor,user):
     k = vector(cos(sensor.yaw*toRad)*cos(sensor.pitch*toRad),sin(sensor.pitch*toRad),
     sin(sensor.yaw*toRad)*cos(sensor.pitch*toRad))
     barbell_anim.axis=k
-    barbell_anim.pos = vector(0,3+sensor.distance*toVirtual,0)
+    if sensor.distance < user.bench_press_distance:
+        barbell_anim.pos = vector(0,3+sensor.distance*toVirtual,0)
+    else:
+        barbell_anim.pos = vector(0,3+user.bench_press_distance*toVirtual,0)
     L.text = 'Set:{}\nRep:{}'.format(user.set_count,user.rep_count)
     
 
@@ -107,7 +110,7 @@ def squat_anims_update(sensor,user):
     k = vector(cos(sensor.yaw*toRad)*cos(sensor.pitch*toRad),sin(sensor.pitch*toRad),
     sin(sensor.yaw*toRad)*cos(sensor.pitch*toRad))
     barbell_anim.axis=k
-    barbell_anim.pos = vector(0,sensor.distance*toVirtual+1,0)
+    barbell_anim.pos = vector(0,sensor.distance*toVirtual+4,0)
     L.text = 'Set:{}\nRep:{}'.format(user.set_count,user.rep_count)
     
 

@@ -53,8 +53,8 @@ class User:
         self.height = 0
         self.arm_length = 0
         self.rest_counter = 0
-        self.bench_press_distance = 30
-        self.squat_distance = 75
+        self.bench_press_distance = 15
+        self.squat_distance = 5
         self.alarming = False
         self.rest_time = 200
     

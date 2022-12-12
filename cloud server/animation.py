@@ -116,8 +116,8 @@ def squat_anims_update(sensor,user):
 
 def unbalance_detect(sensor,barbell):
     # if barbell is unbalanced
-    if abs(sensor.pitch) > 5 or (sensor.yaw > 5 and sensor.yaw < 180) \
-    or (sensor.yaw < 355 and sensor.yaw > 180):
+    if abs(sensor.pitch) > 20 or (sensor.yaw > 20 and sensor.yaw < 180) \
+    or (sensor.yaw < 340 and sensor.yaw > 180):
         unbalanced_text.visible = True
         barbell.unbalanced = True
     else:

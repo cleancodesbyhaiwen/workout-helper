@@ -129,10 +129,10 @@ def rest_anims(user):
         rest_text.visible = True
         rest_time_bar.visible = True
         rest_time_bar.length = 0.05*user.rest_counter
-        if user.rest_counter > user.rest_time - 50 and \
-            user.rest_counter < user.rest_time - 20:
+        if user.rest_counter > user.rest_time - 20 and \
+            user.rest_counter < user.rest_time - 10:
             rest_time_bar.color = color.yellow
-        elif user.rest_counter >= user.rest_time - 20:
+        elif user.rest_counter >= user.rest_time - 10:
             rest_time_bar.color = color.red
         else:
             rest_time_bar.color = color.green

@@ -16,6 +16,8 @@ bench_press_anims = Bench_press_anims()
 squat_anims.invisible()
 bench_press_anims.invisible()
 
+user.set_distance()
+
 while True:
     jsonFile = {"unbalanced":str(barbell.unbalanced),"hit":str(barbell.hit_check),
                 "alarming":str(user.alarming),"set_count":str(user.set_count),"rep_count":str(user.rep_count)}
@@ -35,7 +37,7 @@ while True:
             unbalance_detect(sensor,barbell)
             # Rep Count
             barbell.hit_detect(user,sensor)
-            user.rest_detect(sensor)
+            user.rest_detect(sensor,user)
             rest_anims(user)
 
         elif user.exercise=='squat':
@@ -49,7 +51,7 @@ while True:
             unbalance_detect(sensor,barbell)
             # Rep Count
             barbell.hit_detect(user,sensor)
-            user.rest_detect(sensor)
+            user.rest_detect(sensor,user)
             rest_anims(user)
         else:
             bench_press_anims.invisible()
@@ -60,5 +62,9 @@ while True:
 
     except socket.timeout:
         print('REQUEST TIMED OUT')
+
+
+
+
 
 

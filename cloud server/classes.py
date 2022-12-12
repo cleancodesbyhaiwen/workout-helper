@@ -1,14 +1,31 @@
+import math
+from pymongo import MongoClient
+
+uri = "mongodb+srv://eric:qwert1234@cluster0.xweafpe.mongodb.net/?retryWrites=true&w=majority"
+client = MongoClient(uri)
+db = client.iot_final
+sensor_data = db["sensor_data"]
+userInput = db["userInput"]
+
+userInfoQuery = {}
+userInfo = userInput.find_one(userInfoQuery)
+height = int(userInfo['height'])
+lengthofarm  = int(userInfo['lengthofarm'])
+lengthofleg = int(userInfo['lengthofleg'])
+
 class Sensor:
     def __init__(self):
         self.yaw, self.pitch, self.roll = 0,0,0 # ORIENTATION
         self.last_distance = 0
         self.distance = 0
+        self.date = ''
     def update(self,data):
         self.yaw = float(data['yaw']) if abs(float(data['yaw'])) > 1 else 0
         self.pitch = float(data['pitch']) if abs(float(data['pitch'])) > 1 else 0
         self.roll = float(data['roll']) if abs(float(data['roll'])) > 1 else 0
         self.last_distance = self.distance
         self.distance = int(data['distance'])
+        self.date = data['date']
 
     def print_data(self):
         print('yaw:{:.1f}, pitch:{:.1f}, roll:{:.1f}, distance{:.1f}'
@@ -26,6 +43,8 @@ class Barbell:
             if not self.hitting and sensor.distance > user.bench_press_distance:
                 self.hitting = True
                 user.rep_count += 1
+                # insert to database 
+                result = sensor_data.insert_one( { "date": sensor.date, 'type': user.exercise } )
                 self.hit_check = True
                 self.hitting = True
             elif self.hitting and sensor.distance < user.bench_press_distance:
@@ -56,19 +75,24 @@ class User:
         self.bench_press_distance = 15
         self.squat_distance = 5
         self.alarming = False
-        self.rest_time = 200
+        self.rest_time = 60
     
-    def rest_detect(self, sensor):
+    def rest_detect(self, sensor, user):
         print(self.rest_counter)
+        if abs(sensor.distance-sensor.last_distance)<=2:
+            sensor.distance = sensor.last_distance
         if sensor.distance == sensor.last_distance:
             self.rest_counter += 1
         else:
             self.rest_counter = 0
             self.resting = False
             self.alarming = False
-        if self.rest_counter >= 50 and self.alarming == False:
+        if self.rest_counter >= 20 and self.alarming == False:
             if self.rep_count >= 6 and self.resting == False:
+                # insert to database 
                 self.set_count += 1
+                result = sensor_data.insert_one( { "date_s": sensor.date, 'type_s': user.exercise } )
+                print(result)
                 self.rep_count = 0
             self.resting = True
 
@@ -83,3 +107,12 @@ class User:
             self.resting = False
             self.alarming = False
             self.rest_counter = 0
+            self.unbalanced = False
+
+    def set_distance(self):
+        upper_length = (height-lengthofleg) / 2
+        self.squat_distance = (upper_length + lengthofleg) / 2
+
+        sin_mt = math.sin(math.radians(10))
+        cos_mt = math.sqrt(1-sin_mt**2)
+        self.bench_press_distance = float(lengthofarm) * cos_mt

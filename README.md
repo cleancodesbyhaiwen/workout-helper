@@ -10,12 +10,6 @@ This device will make sure the user is doing full range of motion.
 If the barbell hit the desired height, the device will vibrate to indicate a successful rep.
 Otherwise the rep will not be counted.
 
-<!DOCTYPE HTML>
-<!--
-	Prologue by HTML5 UP
-	html5up.net | @n33co
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html>
 	<head>
 		<title>Columbia University EECS E4764 IoT Project Report Group 23</title>

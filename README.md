@@ -1,8 +1,7 @@
 # workout helper
 
 <li>This is a IoT device. 
-<li>This is deviced is to be mounted on barbell when doing. 
-<li>Squat or Bench Press. 
+<li>This is deviced is to be mounted on barbell when doing Squat or Bench Press.(more exercises can be easily added)
 <li> This device will count the number of reps and sets.
 <li>This device will warn the user when the barbell is unbalanced.
 <li>This device will keep track of the rest time during set and warn the user when time is up. 

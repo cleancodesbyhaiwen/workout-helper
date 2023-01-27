@@ -11,10 +11,10 @@
 <li>Otherwise the rep will not be counted. 
  
 
- <img src="screenshots/architechture.png>     
- <img src="screenshots/result.png>
- <img src="screenshots/vpython.png>
- <img src="screenshots/website.png>
+ <img src="images/architechture.png>     
+ <img src="images/result.png>
+ <img src="images/vpython.png>
+ <img src="images/website.png>
 
 
 
